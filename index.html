@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript" src="angular-pdfjs-viewer-master/demo/vendor/angular/angular.min.js"></script>
+    <script type="text/javascript" src="angular-pdfjs-viewer-master/demo/vendor/pdf.js-viewer/pdf.js"></script>
+    <link rel="stylesheet" type="text/css" href="angular-pdfjs-viewer-master/demo/vendor/pdf.js-viewer/viewer.css"/>
+    <script type="text/javascript" src="angular-pdfjs-viewer-master/dist/angular-pdfjs-viewer.js"></script>
+    <script type="text/javascript" src="html2canvas.js"></script>
+    <script type="text/javascript" src="jspdf.debug.js"></script>
+    <!-- <style>
+        .pdfjs #viewerContainer {
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            position: absolute;
+        }
+        pdfjs-viewer {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+    </style> -->
+</head>
+<body ng-app="myApp" ng-controller="MainController">
+    <h1>PDF Viewer Test</h1>
+    <p>Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet Loren Ipsum dollar sit amet</p>
+    <!-- <pdfjs-viewer src="{{src}}"></pdfjs-viewer> -->
+    <canvas id="myCanvas"></canvas>
+</body>
+<script>
+
+
+
+    var app = angular.module('myApp', ['pdfjsViewer']);
+
+    app.controller('MainController', function($scope){
+        $scope.data = null;
+        /*html2canvas(document.body).then(function(canvas) {
+            var data = canvas.toDataURL();
+            var base64Data = data.substr(22);
+            var pdfData = base64ToUint8Array(base64Data);
+              PDFJS.getDocument(pdfData).then(function (pdf) {
+                pdf.getPage(1).then(function (page) {
+                  var scale = 1;
+                  var viewport = page.getViewport(scale);
+                  var canvas = document.getElementById('myCanvas');
+                  var context = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+                  page.render({ canvasContext: context, viewport: viewport });
+                });
+              });
+
+              function base64ToUint8Array(base64) {
+                var raw = atob(base64);
+                var uint8Array = new Uint8Array(raw.length);
+                for (var i = 0; i < raw.length; i++) {
+                  uint8Array[i] = raw.charCodeAt(i);
+                }
+                return uint8Array;
+              }
+        });*/
+        var pdf = new jsPDF('p', 'pt', 'a4');
+        pdf.addHTML(document.body, function () {
+            var blob = pdf.output('arraybuffer');
+            //$scope.src = blob;
+            //var pdfData = base64ToUint8Array(blob);
+              PDFJS.getDocument(blob).then(function (pdf) {
+                pdf.getPage(1).then(function (page) {
+                  var scale = 1;
+                  var viewport = page.getViewport(scale);
+                  var canvas = document.getElementById('myCanvas');
+                  var context = canvas.getContext('2d');
+                  canvas.height = viewport.height;
+                  canvas.width = viewport.width;
+                  page.render({ canvasContext: context, viewport: viewport });
+                });
+              });
+
+              function base64ToUint8Array(base64) {
+                var raw = atob(base64);
+                var uint8Array = new Uint8Array(raw.length);
+                for (var i = 0; i < raw.length; i++) {
+                  uint8Array[i] = raw.charCodeAt(i);
+                }
+                return uint8Array;
+              }
+            $scope.$apply();
+        });
+        function _base64ToArrayBuffer(base64) {
+            var binary_string =  window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array( len );
+            for (var i = 0; i < len; i++)        {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+    })
+
+  
+
+
+</script>
+</html>
